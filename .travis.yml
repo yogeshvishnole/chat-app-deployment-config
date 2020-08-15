@@ -1,0 +1,20 @@
+language: node_js
+services:
+  - docker
+ before_install:
+  - docker build -t yogeshvishnole/docker-chat-app -f Dockerfile .
+ script:
+  - docker run -e CI=true yogeshvishnole/docker-chat-app
+deploy:
+  provider: elasticbeanstalk
+  region: "ap-south-1"
+  app: "docker-chat-app"
+  env: "DockerChatApp-env"
+  bucket_name: "elasticbeanstalk-ap-south-1-858207080983"
+  bucket_path: "docker-chat-app"
+  on:
+    branch: master
+  access_key_id:
+    secure: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: $AWS_SECRET_KEY
